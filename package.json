@@ -1,0 +1,26 @@
+{
+  "name": "node-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setting": "cd client & npm install & cd ../server & npm install & cd ../",
+    "start:dev": "concurrently \"cd server && npm run start:dev && cd ../\" \"npm run start --prefix client\"",
+    "start": "node ./server/src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/choewy/node-practice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/choewy/node-practice/issues"
+  },
+  "homepage": "https://github.com/choewy/node-practice#readme",
+  "devDependencies": {
+    "concurrently": "^7.1.0"
+  }
+}
