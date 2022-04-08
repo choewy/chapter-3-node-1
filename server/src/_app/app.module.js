@@ -15,9 +15,14 @@ const IncrementService = require('../_inc/increment.service');
     mongoURI,
     { dbName: mongoDBName },
     (error) => {
-        if (error) return console.log('MongoDB Connection Error!');
+        if (error) {
+            console.log('MongoDB Connection Error!');
+            console.log(error);
+            return;
+        };
         IncrementService.initArticleSequence();
         IncrementService.initCommentSequence();
+        console.log('MongoDB Connection Success!');
     }
 ))();
 
