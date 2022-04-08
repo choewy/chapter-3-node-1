@@ -21,9 +21,7 @@ services:
       - 80:5000
     networks:
       - default
-      - chapter-3-1
 
 networks:
-  default:
-    external:
-      name: chapter-3-1
+  chapter-3-1:
+    driver: bridge
