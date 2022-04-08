@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import withStyles from "@mui/styles/withStyles";
 
-function App() {
+const styles = () => ({
+  app: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+});
+
+const App = (props) => {
+  const { classes } = props;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.app}>
+      App
     </div>
-  );
+  )
 }
 
-export default App;
+export default withStyles(styles)(App);
