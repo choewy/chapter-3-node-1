@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "setting": "cd client & npm install & cd ../server & npm install & cd ../",
     "start:dev": "concurrently \"cd server && npm run start:dev && cd ../\" \"npm run start --prefix client\"",
-    "start": "cd server && node ./src/index.js"
+    "build": "cd client && npm install && npm run build && cp build/index.html build/404.html && mv build ../server/build && cd ../",
+    "prerun": "cd server && npm install && cd ../",
+    "start": "cd server && supervisor ./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,8 @@
   "homepage": "https://github.com/choewy/node-practice#readme",
   "devDependencies": {
     "concurrently": "^7.1.0"
+  },
+  "dependencies": {
+    "supervisor": "^0.12.0"
   }
 }
