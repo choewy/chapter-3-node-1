@@ -11,20 +11,3 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-    networks:
-      fmongo:
-        ipv4_address: 172.0.0.2
-  app:
-    build: ./server/
-    restart: always
-    ports: 
-      - 80:5000
-    networks:
-      fmongo:
-        ipv4_address: 172.0.0.3
-  
-networks:
-  fmongo:
-    driver: bridge
-    external: true
-    internal: true
