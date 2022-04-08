@@ -30,8 +30,9 @@ app.use(cors({ origin: '*', credentials: true }));
 /* routes */
 const articleRouter = require('../_article/article.controller');
 const commentRouter = require('../_comment/comment.controller');
+
 app.use('/api/articles', articleRouter);
-app.use('/api/comments', commentRouter);
+app.use('/api/articles', commentRouter);
 
 
 module.exports = app;

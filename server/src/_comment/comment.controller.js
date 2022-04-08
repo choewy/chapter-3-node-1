@@ -5,7 +5,7 @@ const articleCheck = require("../_article/middles/article-check.middles");
 const CommentService = require("./comment.service");
 const router = Router();
 
-router.get('/:articleID', articleCheck, async (req, res) => {
+router.get('/:articleID/comments', articleCheck, async (req, res) => {
     const dto = req.params;
     try {
         const comments = await CommentService.getComments(dto);
@@ -16,7 +16,7 @@ router.get('/:articleID', articleCheck, async (req, res) => {
     };
 });
 
-router.post('/:articleID', articleCheck, async (req, res) => {
+router.post('/:articleID/comments', articleCheck, async (req, res) => {
     const dto = { ...req.params, ...req.body };
     try {
         const comment = await CommentService.createComment(dto);
@@ -27,7 +27,7 @@ router.post('/:articleID', articleCheck, async (req, res) => {
     };
 });
 
-router.patch('/:articleID/:commentID', articleCheck, async (req, res) => {
+router.patch('/:articleID/comments/:commentID', articleCheck, async (req, res) => {
     const dto = { ...req.params, ...req.body };
     try {
         const comment = await CommentService.updateComment(dto);
@@ -38,7 +38,7 @@ router.patch('/:articleID/:commentID', articleCheck, async (req, res) => {
     };
 });
 
-router.delete('/:articleID/:commentID', articleCheck, async (req, res) => {
+router.delete('/:articleID/comments/:commentID', articleCheck, async (req, res) => {
     const dto = req.params;
     try {
         await CommentService.deleteComment(dto);
