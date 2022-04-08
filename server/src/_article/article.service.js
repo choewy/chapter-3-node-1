@@ -2,12 +2,15 @@
 
 const Article = require("./article.model");
 const IncrementService = require("../_inc/increment.service");
+const rowDateFormat = require("../_util/date-formatter.util");
 
 class ArticleService {
     static async getArticles() {
-        return await Article
+        const rows = await Article
             .find({ isDeleted: false })
-            .sort({ createdAt: -1 });;
+            .sort({ createdAt: -1 });
+
+        return rows.map(row => rowDateFormat(row));
     };
 
     static async getArticle(dto) {
@@ -17,7 +20,7 @@ class ArticleService {
         if (!row) throw Error('존재하지 않는 게시글입니다.');
         if (row.isDeleted) throw Error('삭제된 게시글입니다.');
 
-        return row;
+        return rowDateFormat(row);
     };
 
     static async createArticle(dto) {
@@ -31,7 +34,7 @@ class ArticleService {
         const doc = { articleID, title, content, author };
         const row = await Article.create(doc);
 
-        return row;
+        return rowDateFormat(row);
     };
 
     static async updateArticle(dto) {
@@ -48,7 +51,7 @@ class ArticleService {
 
         if (!row) throw Error('존재하지 않는 게시글입니다.');
 
-        return row;
+        return rowDateFormat(row);
     };
 
     static async deleteArticle(dto) {

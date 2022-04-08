@@ -2,13 +2,16 @@
 
 const Comment = require("./comment.model");
 const IncrementService = require("../_inc/increment.service");
+const rowDateFormat = require("../_util/date-formatter.util");
 
 class CommentService {
     static async getComments(dto) {
         const { articleID } = dto;
-        return await Comment
+        const rows = await Comment
             .find({ articleID, isDeleted: false })
             .sort({ createdAt: -1 });
+
+        return rows.map(row => rowDateFormat(row));
     };
 
     static async createComment(dto) {
@@ -21,7 +24,7 @@ class CommentService {
         const doc = { commentID, text, author, articleID };
         const row = await Comment.create(doc);
 
-        return row;
+        return rowDateFormat(row);
     };
 
     static async updateComment(dto) {
@@ -37,7 +40,7 @@ class CommentService {
 
         if (!row) throw Error('존재하지 않는 댓글입니다.');
 
-        return row;
+        return rowDateFormat(row);
     };
 
     static async deleteComment(dto) {
