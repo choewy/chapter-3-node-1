@@ -9,33 +9,37 @@ class CommentService {
         const { articleID } = dto;
         const rows = await Comment
             .find({ articleID, isDeleted: false })
+            .populate('author', 'name email')
             .sort({ createdAt: -1 });
 
         return rows.map(row => rowDateFormat(row));
     };
 
-    static async createComment(dto) {
-        const { articleID, text, author } = dto;
+    static async createComment(user, dto) {
+        const author = user._id;
+        const { articleID, text } = dto;
 
         if (!text) throw Error('댓글 내용을 입력하세요.');
-        if (!author) throw Error('작성자를 입력하세요.');
 
         const commentID = await IncrementService.commentSequence();
-        const doc = { commentID, text, author, articleID };
-        const row = await Comment.create(doc);
+        const doc = { commentID, text, articleID, author };
+        const comment = new Comment(doc);
+        await comment.save();
+
+        const row = await Comment.findOne({ articleID })
+            .populate('author', 'name email');;
 
         return rowDateFormat(row);
     };
 
     static async updateComment(dto) {
-        const { articleID, commentID, text, author } = dto;
+        const { article, commentID, text } = dto;
 
         if (!text) throw Error('댓글 내용을 입력하세요.');
-        if (!author) throw Error('작성자를 입력하세요.');
 
-        const doc = { text, author, articleID };
+        const doc = { text, article };
         const row = await Comment.findOneAndUpdate(
-            { articleID, commentID }, { $set: doc }, { new: true }
+            { article, commentID }, { $set: doc }, { new: true }
         );
 
         if (!row) throw Error('존재하지 않는 댓글입니다.');
@@ -44,10 +48,10 @@ class CommentService {
     };
 
     static async deleteComment(dto) {
-        const { articleID, commentID } = dto;
+        const { article, commentID } = dto;
 
         const row = await Comment.findOneAndUpdate(
-            { articleID, commentID }, { $set: { isDeleted: true } }
+            { article, commentID }, { $set: { isDeleted: true } }
         );
 
         if (!row) throw Error('존재하지 않는 댓글입니다.');

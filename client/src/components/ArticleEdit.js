@@ -49,16 +49,26 @@ const getArticle = async (articleID, hook) => {
 };
 
 const ArticleEdit = (props) => {
-    const { classes } = props;
+    const { classes, user } = props;
     const { articleID } = useParams();
     const navigate = useNavigate();
     const [body, setBody] = useState();
 
     useEffect(() => {
-        getArticle(articleID, setBody);
+        return () => getArticle(articleID, setBody);
     }, [articleID]);
 
-    if (!body) return <></>;
+    useEffect(() => {
+        if (body) {
+            const { author } = body;
+            if (user._id !== author._id) {
+                alert('해당 게시물에 대한 수정 권한이 없습니다.');
+                return navigate(`/${articleID}`);
+            };
+        };
+
+        return () => { };
+    }, [body]);
 
     const valueChange = (e) => {
         const { target: { name, value } } = e;
@@ -68,7 +78,6 @@ const ArticleEdit = (props) => {
     const articleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!body.author) return alert('작성자를 입력하세요.');
         if (!body.title) return alert('제목을 입력하세요.');
         if (!body.content) return alert('내용을 입력하세요.');
 
@@ -77,16 +86,10 @@ const ArticleEdit = (props) => {
         return navigate(`/${article.articleID}`);
     };
 
+    if (!body) return <></>;
+
     return (
         <form className={classes.form} onSubmit={articleSubmit}>
-            <input
-                className={classes.input}
-                placeholder="작성자"
-                name="author"
-                value={body.author}
-                autoComplete='off'
-                onChange={valueChange} />
-
             <input
                 className={classes.input}
                 placeholder="제목"

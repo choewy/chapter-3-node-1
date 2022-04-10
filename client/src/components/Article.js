@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { deleteArticleAction, getArticleByIdAction } from "../actions/actions.articles";
 import withStyles from "@mui/styles/withStyles";
 import Comments from "./Comments";
@@ -43,53 +43,63 @@ const styles = () => ({
     }
 });
 
-const getArticle = async (articleID, hook) => {
-    const { ok, article, error } = await getArticleByIdAction(articleID);
-    if (!ok) alert(error);
-    hook(article);
-};
-
 const Article = (props) => {
-    const { classes } = props;
+    const { classes, user } = props;
     const { articleID } = useParams();
-    const navigate = useNavigate();
     const [article, setArticle] = useState();
 
     useEffect(() => {
-        getArticle(articleID, setArticle);
+        const getArticle = async () => {
+            const response = await getArticleByIdAction(articleID);
+            if (!response.ok) {
+                alert(response.error);
+                return window.location.pathname = '/';
+            };
+            setArticle(response.article);
+        };
+
+        if (articleID) {
+            return () => getArticle();
+        };
+
+        return () => { };
     }, [articleID]);
 
     if (!article) return <></>;
 
+    const { author } = article;
+    const commentsProps = { articleID, user };
+
     const deleteArticle = async () => {
         const flag = window.confirm('게시글을 삭제하시겠습니까?');
         if (!flag) return;
-
         const { ok, error } = await deleteArticleAction(articleID);
         if (!ok) return alert(error);
-
-        alert('게시글이 삭제되었습니다.');
-        return navigate('/');
+        return window.location.pathname = '/';
     };
-
-    const commentsProps = { articleID };
 
     return (
         <div className={classes.container}>
             <div className={classes.wrapper}>
                 <p className={classes.info}>
-                    <span>작성자 : {article.author}</span>
+                    <span>작성자 : {author.name}({author.email})</span>
                     <span>{article.createdAt}</span>
                 </p>
                 <h1 className={classes.title}>{article.title}</h1>
                 <div className={classes.content}>{article.content}</div>
             </div>
 
-            <div className={classes.btnBox}>
-                <Link to={`/${articleID}/edit`}><button>수정</button></Link>
-                <button onClick={deleteArticle}>삭제</button>
-            </div>
-            <Comments {...commentsProps} />
+            {
+                user._id === author._id
+                    ? (
+                        <div className={classes.btnBox}>
+                            <Link to={`/${articleID}/edit`}><button>수정</button></Link>
+                            <button onClick={deleteArticle}>삭제</button>
+                        </div>
+                    )
+                    : <div className={classes.btnBox} />
+            }
+            {author && <Comments {...commentsProps} />}
         </div>
     );
 };

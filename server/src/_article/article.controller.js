@@ -1,6 +1,7 @@
 'use strict';
 
 const { Router } = require("express");
+const authCheck = require("../_auth/middles/auth-check.middles");
 const ArticleService = require("./article.service");
 
 const router = Router();
@@ -26,10 +27,11 @@ router.get('/:articleID', async (req, res) => {
     };
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authCheck, async (req, res) => {
+    const user = req.user;
     const dto = req.body;
     try {
-        const article = await ArticleService.createArticle(dto);
+        const article = await ArticleService.createArticle(user, dto);
         return res.json({ ok: true, article });
 
     } catch (error) {

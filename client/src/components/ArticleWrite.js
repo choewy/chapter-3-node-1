@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import withStyles from "@mui/styles/withStyles";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -41,13 +41,17 @@ const styles = () => ({
 
 
 const ArticleWrite = (props) => {
-    const { classes } = props;
+    const { classes, user } = props;
     const navigate = useNavigate();
     const [body, setBody] = useState({
         title: '',
-        content: '',
-        author: ''
+        content: ''
     });
+
+    useEffect(() => {
+        if (!user) window.location.pathname = "/signin";
+        return () => { };
+    }, [user]);
 
     const valueChange = (e) => {
         const { target: { name, value } } = e;
@@ -57,7 +61,6 @@ const ArticleWrite = (props) => {
     const articleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!body.author) return alert('작성자를 입력하세요.');
         if (!body.title) return alert('제목을 입력하세요.');
         if (!body.content) return alert('내용을 입력하세요.');
 
@@ -68,14 +71,6 @@ const ArticleWrite = (props) => {
 
     return (
         <form className={classes.form} onSubmit={articleSubmit}>
-            <input
-                className={classes.input}
-                placeholder="작성자"
-                name="author"
-                value={body.author}
-                autoComplete='off'
-                onChange={valueChange} />
-
             <input
                 className={classes.input}
                 placeholder="제목"

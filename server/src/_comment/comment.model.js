@@ -11,15 +11,16 @@ const CommentSchema = mongoose.Schema({
     text: {
         type: String,
     },
-    author: {
-        type: String,
-    },
     isDeleted: {
         type: Boolean,
         default: false
     },
     articleID: {
         type: Number
+    },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
 }, { timestamps: true });
 

@@ -41,8 +41,8 @@ const styles = () => ({
 });
 
 const Comment = (props) => {
-    const { classes, articleID, comment, refreshComments } = props;
-    const { commentID } = comment;
+    const { classes, articleID, user, comment, refreshComments } = props;
+    const { commentID, author } = comment;
     const [edit, setEdit] = useState(false);
 
     const editButtonClick = async () => setEdit(true);
@@ -61,21 +61,25 @@ const Comment = (props) => {
         return (<>
             <div className={classes.wrapper}>
                 <p className={classes.info}>
-                    <b><span>{comment.author}</span></b>
+                    <b><span>{author.name}({author.email})</span></b>
                     <span>{comment.createdAt}</span>
                 </p>
                 <div>
                     <div className={classes.text}>{comment.text}</div>
                 </div>
-                <div className={classes.btnBox}>
-                    <button onClick={editButtonClick}>수정</button>
-                    <button onClick={deleteButtonClick}>삭제</button>
-                </div>
+                {
+                    (user && user._id === author._id)
+                        ? (<div className={classes.btnBox}>
+                            <button onClick={editButtonClick}>수정</button>
+                            <button onClick={deleteButtonClick}>삭제</button>
+                        </div>)
+                        : <div className={classes.btnBox} />
+                }
             </div>
         </>);
     };
 
-    const editProps = { articleID, comment, refreshComments, setEdit };
+    const editProps = { articleID, user, comment, refreshComments, setEdit };
 
     return <CommentEdit {...editProps} />;
 };

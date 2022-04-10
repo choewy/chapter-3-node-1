@@ -36,8 +36,8 @@ const styles = () => ({
 
 const CommentEdit = (props) => {
     const { classes, articleID, comment, refreshComments, setEdit } = props;
-    const { commentID, author, text } = comment;
-    const [body, setBody] = useState({ author, text });
+    const { commentID, text } = comment;
+    const [body, setBody] = useState({ text });
 
     const valueChange = (e) => {
         const { target: { name, value } } = e;
@@ -53,26 +53,17 @@ const CommentEdit = (props) => {
     };
 
     const saveComment = async () => {
-        if (body.author === '') return alert('작성자를 입력하세요.');
         if (body.text === '') return alert('댓글 내용을 입력하세요.');
         const { ok, error } = await updateCommentAction(articleID, commentID, body);
-
         if (!ok) return alert(error);
         await refreshComments();
+        setEdit(false);
     };
 
     const cancelClick = () => setEdit(false);
 
     return (
         <div>
-            <input
-                className={classes.input}
-                placeholder="작성자"
-                name="author"
-                value={body.author}
-                autoComplete='off'
-                onChange={valueChange} />
-
             <textarea
                 className={classes.textarea}
                 placeholder="댓글 내용을 입력하세요."

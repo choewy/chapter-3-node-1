@@ -35,9 +35,8 @@ const styles = () => ({
 });
 
 const CommentReply = (props) => {
-    const { classes, articleID, refreshComments } = props;
+    const { classes, articleID, user, refreshComments } = props;
     const [body, setBody] = useState({
-        author: '',
         text: '',
     });
 
@@ -55,7 +54,6 @@ const CommentReply = (props) => {
     };
 
     const submitComment = async () => {
-        if (body.author === '') return alert('작성자를 입력하세요.');
         if (body.text === '') return alert('댓글 내용을 입력하세요.');
         const { ok, error } = await createCommentAction(articleID, body);
 
@@ -64,28 +62,23 @@ const CommentReply = (props) => {
         setBody({ ...body, text: '' });
     };
 
+    const textAreaProps = {
+        className: classes.textarea,
+        placeholder: user ? "댓글 내용을 입력하세요." : "댓글을 남기기 위해서는 먼저 로그인을 해야합니다.",
+        disabled: user ? false : true,
+        rows: 5,
+        name: 'text',
+        value: body.text,
+        autoComplete: 'off',
+        onKeyDown: enterKeyDown,
+        onChange: valueChange
+    }
+
     return (
         <div>
-            <input
-                className={classes.input}
-                placeholder="작성자"
-                name="author"
-                value={body.author}
-                autoComplete='off'
-                onChange={valueChange} />
-
-            <textarea
-                className={classes.textarea}
-                placeholder="댓글 내용을 입력하세요."
-                rows={5}
-                name="text"
-                value={body.text}
-                autoComplete='off'
-                onKeyDown={enterKeyDown}
-                onChange={valueChange} />
-
+            <textarea {...textAreaProps} />
             <div className={classes.btnBox}>
-                <button className={classes.btn} onClick={submitComment}>등록</button>
+                {user && <button className={classes.btn} onClick={submitComment}>등록</button>}
             </div>
         </div>
     );

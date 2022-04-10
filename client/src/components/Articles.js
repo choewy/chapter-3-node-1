@@ -22,6 +22,12 @@ const styles = () => ({
     },
     link: {
         textDecoration: 'none'
+    },
+    row: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
 });
 
@@ -36,7 +42,7 @@ const Articles = (props) => {
     const [articles, setArticles] = useState();
 
     useEffect(() => {
-        getArticles(setArticles);
+        return () => getArticles(setArticles);
     }, []);
 
     if (!articles) return (<></>)
@@ -46,11 +52,15 @@ const Articles = (props) => {
             <ul className={classes.list}>
                 {
                     articles.map((article, key) => {
-                        const { articleID, title, createdAt } = article;
+                        const { articleID, title, createdAt, author } = article;
+                        const { name, email } = author;
                         const linkProps = { className: classes.link, to: `/${articleID}` };
                         return (
                             <li key={key} className={classes.item}>
-                                <Link {...linkProps}>{`[${createdAt}]`} {title}</Link>
+                                <p className={classes.row}>
+                                    <Link {...linkProps}>{title}</Link>
+                                    <span>{name} : {createdAt}</span>
+                                </p>
                             </li>
                         );
                     })

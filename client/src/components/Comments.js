@@ -8,13 +8,12 @@ import CommentReply from "./CommentReply";
 const styles = () => ({});
 
 const getComments = async (articleID, hook) => {
-    const { ok, comments, error } = await getCommentsAction(articleID);
-    if (!ok) return alert(error);
-    hook(comments);
+    const { ok, comments } = await getCommentsAction(articleID);
+    if (ok) return hook(comments);
 };
 
 const Comments = (props) => {
-    const { articleID } = props;
+    const { articleID, user } = props;
     const [comments, setComments] = useState();
 
     const refreshComments = async () => {
@@ -22,19 +21,21 @@ const Comments = (props) => {
     };
 
     useEffect(() => {
-        getComments(articleID, setComments);
+        if (articleID) {
+            return () => getComments(articleID, setComments);
+        };
     }, [articleID]);
 
     if (!comments) return <></>;
 
-    const replyProps = { articleID, refreshComments };
+    const replyProps = { articleID, user, refreshComments };
 
     return (
         <div>
             <CommentReply {...replyProps} />
             {
                 comments.map((comment, key) => {
-                    const commentProps = { key, articleID, comment, refreshComments }
+                    const commentProps = { key, articleID, user, comment, refreshComments }
                     return <Comment {...commentProps} />
                 })
             }

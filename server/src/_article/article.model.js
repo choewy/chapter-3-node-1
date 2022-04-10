@@ -5,21 +5,24 @@ const mongoose = require('mongoose');
 const ArticleSchema = mongoose.Schema({
     articleID: {
         type: Number,
-        index: true,
-        unique: true
+        unique: true,
+        require: true
     },
     title: {
         type: String,
+        require: true
     },
     content: {
         type: String,
-    },
-    author: {
-        type: String,
+        require: true
     },
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, { timestamps: true });
 

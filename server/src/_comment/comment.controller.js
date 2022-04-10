@@ -2,6 +2,7 @@
 
 const { Router } = require("express");
 const articleCheck = require("../_article/middles/article-check.middles");
+const authCheck = require("../_auth/middles/auth-check.middles");
 const CommentService = require("./comment.service");
 const router = Router();
 
@@ -16,10 +17,11 @@ router.get('/:articleID/comments', articleCheck, async (req, res) => {
     };
 });
 
-router.post('/:articleID/comments', articleCheck, async (req, res) => {
+router.post('/:articleID/comments', authCheck, articleCheck, async (req, res) => {
+    const user = req.user;
     const dto = { ...req.params, ...req.body };
     try {
-        const comment = await CommentService.createComment(dto);
+        const comment = await CommentService.createComment(user, dto);
         return res.json({ ok: true, comment });
     } catch (error) {
         const { message } = error;
