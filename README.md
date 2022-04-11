@@ -7,3 +7,8 @@
 ## API Docs
 
 - [/app/README.md](https://github.com/choewy/node-chapter-1/blob/master/app/README.md)
+
+## Development
+
+- Server : Node.js - express, mongoose
+- Client : React.js
