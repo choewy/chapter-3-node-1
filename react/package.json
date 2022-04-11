@@ -1,5 +1,5 @@
 {
-  "name": "views",
+  "name": "node-chapter-1-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -37,6 +37,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "./",
   "proxy": "http://localhost:5000"
 }

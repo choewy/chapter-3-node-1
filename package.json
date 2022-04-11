@@ -1,5 +1,5 @@
 {
-  "name": "chapter-1",
+  "name": "node-chapter-1",
   "version": "1.0.0",
   "main": "index.js",
   "description": "",
@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon ./bin/www.js",
-    "start": "node ./bin/www.js"
+    "start": "node ./bin/www.js",
+    "build": "cd react && npm run build && cd ../"
   },
   "keywords": [],
   "author": "",
