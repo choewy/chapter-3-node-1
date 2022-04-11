@@ -1,28 +1,22 @@
 {
-  "name": "node-chapter-1",
+  "name": "chapter-1",
   "version": "1.0.0",
-  "main": "index.js",
   "description": "",
-  "bin": {
-    "chapter-1": "bin/www.js"
-  },
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon ./bin/www.js",
-    "start": "node ./bin/www.js",
-    "build": "cd react && npm run build && cd ../"
+    "build": "cd react && npm run build && cd ../",
+    "start": "cd app && npm run start:dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/choewy/node-chapter-1.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.10",
-    "morgan": "^1.10.0"
-  }
+  "bugs": {
+    "url": "https://github.com/choewy/node-chapter-1/issues"
+  },
+  "homepage": "https://github.com/choewy/node-chapter-1#readme"
 }
