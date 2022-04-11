@@ -3,8 +3,8 @@
 const express = require('express');
 const path = require('path');
 
-const build = path.join(__dirname, '../build');
-const html = path.join(__dirname, '../build/index.html');
+const build = path.join(__dirname, '../view');
+const html = path.join(__dirname, '../view/index.html');
 
 module.exports = (app) => {
     app.use('/api/auth', require('./controllers/user.controller'));
