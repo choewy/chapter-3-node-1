@@ -15,7 +15,7 @@ services:
       - default
 
   app:
-    build: ./server/
+    build: ./app/
     restart: always
     ports:
       - 80:5000
