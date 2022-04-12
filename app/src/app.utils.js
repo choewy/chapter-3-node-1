@@ -9,13 +9,13 @@ const ROUNDS = 10;
 
 const dateFormat = (dateString) => {
     const date = new Date(dateString);
-    const hour = date.getHours() + 9;
-    const koreanTime = hour < 24 ? hour : hour - 15;
+    date.setHours(date.getHours() + 9);
+
     return [
         date.getFullYear(), "-",
         `0${date.getMonth() + 1}`.slice(-2) + "-",
         `0${date.getDate()}`.slice(-2), " ",
-        `0${koreanTime}`.slice(-2), ":",
+        `0${date.getHours()}`.slice(-2), ":",
         `0${date.getMinutes()}`.slice(-2)
     ].join('');
 };
